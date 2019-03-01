@@ -1,6 +1,7 @@
 use crate::routes::{get_path, ActivePage};
 use serde_json;
 use std::cell::Cell;
+use std::collections::HashMap;
 use std::rc::Rc;
 
 mod msg;
@@ -12,6 +13,7 @@ pub struct State {
     #[serde(skip)]
     listeners: Vec<Box<Fn() -> ()>>,
     path: String,
+    form: HashMap<String, String>,
 }
 
 impl State {
@@ -22,6 +24,7 @@ impl State {
             // TODO: Move this to the store.. shouldn't be storing functions in state
             // just data
             listeners: vec![],
+            form: HashMap::new(),
         }
     }
 
@@ -47,6 +50,7 @@ impl State {
         match msg {
             Msg::Click => self.increment_click(),
             Msg::Path(page) => self.set_path(page),
+            Msg::Input(name, input) => self.set_input(name.to_string(), input.to_string()),
         };
 
         // Whenever we update state we'll let all of our state listeners know that state was
@@ -63,6 +67,10 @@ impl State {
     pub fn path(&self) -> &str {
         &self.path
     }
+
+    pub fn form(&self) -> &HashMap<String, String> {
+        &self.form
+    }
 }
 
 impl State {
@@ -72,6 +80,10 @@ impl State {
 
     fn set_path(&mut self, page: &ActivePage) {
         self.path = get_path(page).to_string();
+    }
+
+    fn set_input(&mut self, name: String, input: String) {
+        self.form.insert(name, input);
     }
 }
 
