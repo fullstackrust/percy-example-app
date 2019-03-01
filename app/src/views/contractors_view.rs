@@ -20,12 +20,12 @@ impl View for ContractorsView {
         let nav_bar = NavBarView::new(ActivePage::Contractors, Rc::clone(&self.store)).render();
 
         html! {
-        <div>
-            { nav_bar }
             <div>
-             Contractors page here
+                { nav_bar }
+                <div>
+                    Contractors page here
+                </div>
             </div>
-        </div>
         }
     }
 }

@@ -1,3 +1,4 @@
+use crate::routes::{get_path, ActivePage};
 use serde_json;
 use std::cell::Cell;
 use std::rc::Rc;
@@ -45,7 +46,7 @@ impl State {
     pub fn msg(&mut self, msg: &Msg) {
         match msg {
             Msg::Click => self.increment_click(),
-            Msg::Path(path) => self.set_path(path.to_string()),
+            Msg::Path(page) => self.set_path(page),
         };
 
         // Whenever we update state we'll let all of our state listeners know that state was
@@ -69,8 +70,8 @@ impl State {
         self.click_count.set(self.click_count.get() + 1);
     }
 
-    fn set_path(&mut self, path: String) {
-        self.path = path;
+    fn set_path(&mut self, page: &ActivePage) {
+        self.path = get_path(page).to_string();
     }
 }
 

@@ -16,7 +16,7 @@ pub enum ActivePage {
     Report,
 }
 
-pub fn get_path(page: ActivePage) -> &'static str {
+pub fn get_path(page: &ActivePage) -> &'static str {
     match page {
         ActivePage::Home => "/",
         ActivePage::Management => "/management",
@@ -43,29 +43,41 @@ pub fn make_router(store: Rc<RefCell<Store>>) -> Router {
     let home_route = Route::new(
         "/",
         param_types,
-        Box::new(move |params| Box::new(HomeView::new(Rc::clone(&store_clone))) as Box<View>),
+        Box::new(move |_params| Box::new(HomeView::new(Rc::clone(&store_clone))) as Box<View>),
     );
-    router.add_route(home_route);
 
     let store_clone = Rc::clone(&store);
     let param_types = HashMap::new();
     let contractors_route = Route::new(
         "/contractors",
         param_types,
-        Box::new(move |params| {
+        Box::new(move |_params| {
             Box::new(ContractorsView::new(Rc::clone(&store_clone))) as Box<View>
         }),
     );
-    router.add_route(contractors_route);
 
     let store_clone = Rc::clone(&store);
     let param_types = HashMap::new();
     let management_route = Route::new(
         "/management",
         param_types,
-        Box::new(move |params| Box::new(ManagementView::new(Rc::clone(&store_clone))) as Box<View>),
+        Box::new(move |_params| {
+            Box::new(ManagementView::new(Rc::clone(&store_clone))) as Box<View>
+        }),
     );
+
+    let store_clone = Rc::clone(&store);
+    let param_types = HashMap::new();
+    let report_route = Route::new(
+        "/report",
+        param_types,
+        Box::new(move |_params| Box::new(ReportView::new(Rc::clone(&store_clone))) as Box<View>),
+    );
+
+    router.add_route(home_route);
     router.add_route(management_route);
+    router.add_route(contractors_route);
+    router.add_route(report_route);
 
     router
 }

@@ -28,11 +28,17 @@ static USER_ROLE_SELECTOR_CSS: &'static str = css! {"
 }
 "};
 
-fn user_role_button_component(name: &str, path: &str) -> VirtualNode {
+fn user_role_button_callback(store: Rc<RefCell<Store>>, page: &'static ActivePage) -> Box<Fn(u32)> {
+    Box::new(move |_ev: u32| {
+        store.borrow_mut().msg(&Msg::Path(page));
+    })
+}
+
+fn user_role_button_component(name: &str, cb: Box<Fn(u32)>) -> VirtualNode {
     html! {
         <button
             onclick=move |_ev: u32| {
-                store.borrow_mut().msg(&Msg::Path(path.to_string()));
+                cb(_ev);
             }
         >
             { text!(name) }
@@ -40,11 +46,14 @@ fn user_role_button_component(name: &str, path: &str) -> VirtualNode {
     }
 }
 
-fn user_role_selector_component() -> VirtualNode {
+fn user_role_selector_component(
+    manager_cb: Box<Fn(u32)>,
+    contractor_cb: Box<Fn(u32)>,
+) -> VirtualNode {
     html! {
         <div class=USER_ROLE_SELECTOR_CSS>
-            { user_role_button_component("I am a Manager", "/management") }
-            { user_role_button_component("I am a Contractor", "/contractors") }
+            { user_role_button_component("I am a Manager", manager_cb) }
+            { user_role_button_component("I am a Contractor", contractor_cb) }
         </div>
     }
 }
@@ -64,26 +73,14 @@ impl View for HomeView {
     fn render(&self) -> VirtualNode {
         let nav_bar = NavBarView::new(ActivePage::Home, Rc::clone(&self.store)).render();
 
-        let store = Rc::clone(&self.store);
-
-        let click_count = self.store.borrow().click_count();
-        let click_count = &*click_count.to_string();
-
-        let click_component =
-            html! { <strong style="font-size: 30px">{ text!(click_count) }</strong> };
+        let manager_cb = user_role_button_callback(Rc::clone(&self.store), &ActivePage::Management);
+        let contractor_cb =
+            user_role_button_callback(Rc::clone(&self.store), &ActivePage::Contractors);
 
         html! {
             <div>
                 { nav_bar }
-
-                { user_role_selector_component() }
-
-                <span> The button has been clicked: { click_component } times!</span>
-                    <button onclick=move|_: u8| { store.borrow_mut().msg(&Msg::Click) }>
-                    Click me!
-                </button>
-
-                <div> In this time Ferris has made { text!(click_count) } new friends. </div>
+                { user_role_selector_component(manager_cb, contractor_cb) }
             </div>
         }
     }

@@ -1,6 +1,6 @@
+use crate::routes::ActivePage;
 use crate::store::Store;
 use crate::Msg;
-use crate::routes::ActivePage;
 use css_rs_macro::css;
 use std::cell::RefCell;
 use std::rc::Rc;
@@ -24,10 +24,15 @@ impl View for NavBarView {
     fn render(&self) -> VirtualNode {
         let store = self.store.borrow();
 
-        let home = NavBarItemView::new(Rc::clone(&self.store), "/", "InnoTrade Contractor", "");
+        let home = NavBarItemView::new(
+            Rc::clone(&self.store),
+            &ActivePage::Home,
+            "InnoTrade Contractor",
+            "",
+        );
         let contractors = NavBarItemView::new(
             Rc::clone(&self.store),
-            "/contractors",
+            &ActivePage::Contractors,
             "Contractors",
             "margin-left: auto;",
         );

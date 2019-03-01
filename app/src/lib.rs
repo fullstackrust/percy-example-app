@@ -1,6 +1,5 @@
 #![feature(proc_macro_hygiene)]
 
-#[macro_use]
 extern crate virtual_dom_rs;
 
 use router_rs::prelude::*;

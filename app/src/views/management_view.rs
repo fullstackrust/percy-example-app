@@ -20,12 +20,12 @@ impl View for ManagementView {
         let nav_bar = NavBarView::new(ActivePage::Management, Rc::clone(&self.store)).render();
 
         html! {
-        <div>
-            { nav_bar }
             <div>
-             Management page here
+                { nav_bar }
+                <div>
+                    Management page here
+                </div>
             </div>
-        </div>
         }
     }
 }

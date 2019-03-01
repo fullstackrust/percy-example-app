@@ -1,4 +1,6 @@
+use crate::routes::ActivePage;
+
 pub enum Msg {
     Click,
-    Path(String),
+    Path(&'static ActivePage),
 }

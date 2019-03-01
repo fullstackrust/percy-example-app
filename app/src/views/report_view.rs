@@ -20,12 +20,12 @@ impl View for ReportView {
         let nav_bar = NavBarView::new(ActivePage::Report, Rc::clone(&self.store)).render();
 
         html! {
-        <div>
-            { nav_bar }
             <div>
-             Report page here
+                { nav_bar }
+                <div>
+                    Report page here
+                </div>
             </div>
-        </div>
         }
     }
 }

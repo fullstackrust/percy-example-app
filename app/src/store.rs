@@ -16,7 +16,7 @@ impl Store {
 
     pub fn msg(&mut self, msg: &Msg) {
         match msg {
-            Msg::Path(path) => self.state.msg(msg),
+            Msg::Path(_page) => self.state.msg(msg),
             _ => self.state.msg(msg),
         }
     }
