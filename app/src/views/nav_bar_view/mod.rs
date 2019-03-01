@@ -21,25 +21,27 @@ impl NavBarView {
 
 pub enum ActivePage {
     Home,
-    Contributors,
+    Management,
+    Contractors,
+    Report,
 }
 
 impl View for NavBarView {
     fn render(&self) -> VirtualNode {
         let store = self.store.borrow();
 
-        let home = NavBarItemView::new(Rc::clone(&self.store), "/", "Isomorphic Web App", "");
-        let contributors = NavBarItemView::new(
+        let home = NavBarItemView::new(Rc::clone(&self.store), "/", "InnoTrade Contractor", "");
+        let contractors = NavBarItemView::new(
             Rc::clone(&self.store),
-            "/contributors",
-            "Contributors",
+            "/contractors",
+            "Contractors",
             "margin-left: auto;",
         );
 
         html! {
         <div class=NAV_BAR_CSS>
             { home.render() }
-            { contributors.render() }
+            { contractors.render() }
         </div>
         }
     }

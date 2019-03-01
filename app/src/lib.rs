@@ -78,16 +78,15 @@ fn make_router(store: Rc<RefCell<Store>>) -> Router {
         param_types,
         Box::new(move |params| Box::new(HomeView::new(Rc::clone(&store_clone))) as Box<View>),
     );
-
     router.add_route(home_route);
 
     let param_types = HashMap::new();
-    let contributors_route = Route::new(
-        "/contributors",
+    let contractors_route = Route::new(
+        "/contractors",
         param_types,
-        Box::new(move |params| Box::new(ContributorsView::new(Rc::clone(&store))) as Box<View>),
+        Box::new(move |params| Box::new(ContractorsView::new(Rc::clone(&store))) as Box<View>),
     );
-    router.add_route(contributors_route);
+    router.add_route(contractors_route);
 
     router
 }

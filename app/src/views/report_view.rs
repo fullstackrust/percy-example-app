@@ -5,25 +5,25 @@ use std::cell::RefCell;
 use std::rc::Rc;
 use virtual_dom_rs::prelude::*;
 
-pub struct ContributorsView {
+pub struct ReportView {
     store: Rc<RefCell<Store>>,
 }
 
-impl ContributorsView {
-    pub fn new(store: Rc<RefCell<Store>>) -> ContributorsView {
-        ContributorsView { store }
+impl ReportView {
+    pub fn new(store: Rc<RefCell<Store>>) -> ReportView {
+        ReportView { store }
     }
 }
 
-impl View for ContributorsView {
+impl View for ReportView {
     fn render(&self) -> VirtualNode {
-        let nav_bar = NavBarView::new(ActivePage::Contributors, Rc::clone(&self.store)).render();
+        let nav_bar = NavBarView::new(ActivePage::Report, Rc::clone(&self.store)).render();
 
         html! {
         <div>
             { nav_bar }
             <div>
-             Contributors page here
+             Report page here
             </div>
         </div>
         }
