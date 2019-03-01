@@ -1,5 +1,5 @@
+use crate::routes::ActivePage;
 use crate::store::Store;
-use crate::views::nav_bar_view::ActivePage;
 use crate::views::nav_bar_view::NavBarView;
 use std::cell::RefCell;
 use std::rc::Rc;

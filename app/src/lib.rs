@@ -3,29 +3,23 @@
 #[macro_use]
 extern crate virtual_dom_rs;
 
-use virtual_dom_rs::prelude::*;
-
-pub use virtual_dom_rs::VirtualNode;
-
 use router_rs::prelude::*;
-
-use serde;
+pub use virtual_dom_rs::VirtualNode;
 
 #[macro_use]
 extern crate serde_derive;
 
-use serde_json;
-
 use std::cell::RefCell;
 use std::rc::Rc;
+
+mod routes;
+pub use crate::routes::*;
 
 mod store;
 pub use crate::store::*;
 
 mod state;
 pub use crate::state::*;
-use crate::views::*;
-use std::collections::HashMap;
 
 mod views;
 
@@ -65,30 +59,6 @@ impl App {
             .unwrap()
             .render()
     }
-}
-
-fn make_router(store: Rc<RefCell<Store>>) -> Router {
-    let mut router = Router::default();
-
-    let store_clone = Rc::clone(&store);
-
-    let param_types = HashMap::new();
-    let home_route = Route::new(
-        "/",
-        param_types,
-        Box::new(move |params| Box::new(HomeView::new(Rc::clone(&store_clone))) as Box<View>),
-    );
-    router.add_route(home_route);
-
-    let param_types = HashMap::new();
-    let contractors_route = Route::new(
-        "/contractors",
-        param_types,
-        Box::new(move |params| Box::new(ContractorsView::new(Rc::clone(&store))) as Box<View>),
-    );
-    router.add_route(contractors_route);
-
-    router
 }
 
 #[cfg(test)]

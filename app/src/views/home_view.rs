@@ -1,13 +1,55 @@
-use crate::store::Store;
+use crate::routes::ActivePage;
 use crate::state::Msg;
-use crate::views::nav_bar_view::ActivePage;
+use crate::store::Store;
 use crate::views::nav_bar_view::NavBarView;
+use css_rs_macro::css;
 
 use virtual_dom_rs::prelude::*;
 
 use std::cell::RefCell;
 use std::rc::Rc;
 
+// Components
+static USER_ROLE_SELECTOR_CSS: &'static str = css! {"
+:host {
+    font-size: 30px;
+    font-weight: bold;
+    display: flex;
+    flex-direction: row;
+}
+
+:host > button {
+    color: blue;
+    background: white;
+    border: 1px solid blue;
+    margin: 20px;
+    line-height: 50px;
+    flex: 1;
+}
+"};
+
+fn user_role_button_component(name: &str, path: &str) -> VirtualNode {
+    html! {
+        <button
+            onclick=move |_ev: u32| {
+                store.borrow_mut().msg(&Msg::Path(path.to_string()));
+            }
+        >
+            { text!(name) }
+        </button>
+    }
+}
+
+fn user_role_selector_component() -> VirtualNode {
+    html! {
+        <div class=USER_ROLE_SELECTOR_CSS>
+            { user_role_button_component("I am a Manager", "/management") }
+            { user_role_button_component("I am a Contractor", "/contractors") }
+        </div>
+    }
+}
+
+// Page
 pub struct HomeView {
     store: Rc<RefCell<Store>>,
 }
@@ -31,17 +73,18 @@ impl View for HomeView {
             html! { <strong style="font-size: 30px">{ text!(click_count) }</strong> };
 
         html! {
-        <div>
+            <div>
+                { nav_bar }
 
-          { nav_bar }
+                { user_role_selector_component() }
 
-          <span> The button has been clicked: { click_component } times!</span>
-          <button onclick=move|_: u8| { store.borrow_mut().msg(&Msg::Click) }>
-            Click me!
-          </button>
-          <div> In this time Ferris has made { text!(click_count) } new friends. </div>
+                <span> The button has been clicked: { click_component } times!</span>
+                    <button onclick=move|_: u8| { store.borrow_mut().msg(&Msg::Click) }>
+                    Click me!
+                </button>
 
-        </div>
+                <div> In this time Ferris has made { text!(click_count) } new friends. </div>
+            </div>
         }
     }
 }

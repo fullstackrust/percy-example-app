@@ -1,5 +1,6 @@
 use crate::store::Store;
 use crate::Msg;
+use crate::routes::ActivePage;
 use css_rs_macro::css;
 use std::cell::RefCell;
 use std::rc::Rc;
@@ -17,13 +18,6 @@ impl NavBarView {
     pub fn new(active_page: ActivePage, store: Rc<RefCell<Store>>) -> NavBarView {
         NavBarView { active_page, store }
     }
-}
-
-pub enum ActivePage {
-    Home,
-    Management,
-    Contractors,
-    Report,
 }
 
 impl View for NavBarView {
