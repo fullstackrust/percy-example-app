@@ -30,33 +30,26 @@ impl View for NavBarView {
             "InnoTrade Contractor",
             "",
         );
-        let contractors = NavBarItemView::new(
-            Rc::clone(&self.store),
-            &ActivePage::Contractors,
-            "Contractors",
-            "margin-left: auto;",
-        );
 
         html! {
         <div class=NAV_BAR_CSS>
             { home.render() }
-            { contractors.render() }
         </div>
         }
     }
 }
 
 static NAV_BAR_CSS: &'static str = css! {"
-:host {
-    align-items: center;
-    background: linear-gradient(267deg,#2a38ef,#200994 50%,#1c2dab);
-    color: white;
-    display: flex;
-    font-family: Avenir-Next;
-    font-size: 20px;
-    font-weight: bold;
-    height: 50px;
-    padding-left: 30px;
-    padding-right: 30px;
-}
+    :host {
+        align-items: center;
+        background: linear-gradient(267deg,#2a38ef,#200994 50%,#1c2dab);
+        color: white;
+        display: flex;
+        font-family: Avenir-Next;
+        font-size: 20px;
+        font-weight: bold;
+        height: 50px;
+        padding-left: 30px;
+        padding-right: 30px;
+    }
 "};

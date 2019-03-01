@@ -52,12 +52,12 @@ impl View for NavBarItemView {
 }
 
 static NAV_BAR_ITEM_CSS: &'static str = css! {"
-:host {
-    border-bottom: solid transparent 3px;
-    cursor: pointer;
-}
+    :host {
+        border-bottom: solid transparent 3px;
+        cursor: pointer;
+    }
 
-:host:hover {
-    border-bottom: solid white 3px;
-}
+    :host:hover {
+        border-bottom: solid white 3px;
+    }
 "};

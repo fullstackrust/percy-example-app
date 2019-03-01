@@ -11,21 +11,21 @@ use std::rc::Rc;
 
 // Components
 static USER_ROLE_SELECTOR_CSS: &'static str = css! {"
-:host {
-    font-size: 30px;
-    font-weight: bold;
-    display: flex;
-    flex-direction: row;
-}
+    :host {
+        font-size: 30px;
+        font-weight: bold;
+        display: flex;
+        flex-direction: row;
+    }
 
-:host > button {
-    color: blue;
-    background: white;
-    border: 1px solid blue;
-    margin: 20px;
-    line-height: 50px;
-    flex: 1;
-}
+    :host > button {
+        color: blue;
+        background: white;
+        border: 1px solid blue;
+        margin: 20px;
+        line-height: 50px;
+        flex: 1;
+    }
 "};
 
 fn user_role_button_callback(store: Rc<RefCell<Store>>, page: &'static ActivePage) -> Box<Fn(u32)> {
