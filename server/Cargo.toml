@@ -1,0 +1,10 @@
+[package]
+name = "isomorphic-server"
+version = "0.1.0"
+publish = false
+edition = "2018"
+
+[dependencies]
+virtual-dom-rs = { path = "../percy/crates/virtual-dom-rs" }
+isomorphic-app = { path = "../app" }
+actix-web = "0.7"

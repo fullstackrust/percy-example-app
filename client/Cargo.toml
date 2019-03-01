@@ -1,0 +1,31 @@
+[package]
+name = "isomorphic-client"
+version = "0.1.0"
+publish = false
+edition = "2018"
+
+[lib]
+crate-type = ["cdylib"]
+
+[dependencies]
+console_error_panic_hook = "0.1"
+isomorphic-app = { path = "../app" }
+virtual-dom-rs = { path = "../percy/crates/virtual-dom-rs" }
+
+[dependencies.wasm-bindgen]
+version = "0.2.33"
+features = ["default", "nightly"]
+
+[dependencies.web-sys]
+version = "0.3"
+features = [
+    "console",
+    "Document",
+    "Element",
+    "EventTarget",
+    "Node",
+    "NodeList",
+    "Text",
+    "Window",
+    "HtmlCollection",
+]

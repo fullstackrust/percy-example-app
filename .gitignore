@@ -1,0 +1,11 @@
+target
+**/*.rs.bk
+Cargo.lock
+.idea
+node_modules
+.DS_Store
+
+# Generated WebAssembly modules
+tests/jsdom/jsdom_tests*
+/client/dist
+/client/build

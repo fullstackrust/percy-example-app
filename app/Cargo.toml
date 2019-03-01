@@ -1,0 +1,15 @@
+[package]
+name = "isomorphic-app"
+version = "0.1.0"
+publish = false
+edition = "2018"
+
+[dependencies]
+virtual-dom-rs = { path = "../percy/crates/virtual-dom-rs" }
+css-rs-macro = { path = "../percy/crates/css-rs-macro" }
+router-rs = { path = "../percy/crates/router-rs" }
+serde = { version = "1", features = ["rc"] }
+serde_derive = "1"
+serde_json = "1"
+wasm-bindgen = "0.2.33"
+web-sys = "0.3.10"
