@@ -28,8 +28,8 @@ pub struct App {
 }
 
 impl App {
-    pub fn new(count: u32) -> App {
-        let state = State::new(count);
+    pub fn new() -> App {
+        let state = State::new();
         let store = Rc::new(RefCell::new(Store::new(state)));
 
         let router = make_router(Rc::clone(&store));

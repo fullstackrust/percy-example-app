@@ -1,72 +1,52 @@
-extern crate actix_web;
-extern crate env_logger;
-use self::actix_web::{fs, http, middleware, HttpRequest, HttpResponse, Json, Responder, Result};
+extern crate pretty_env_logger;
 
-use isomorphic_app::api::{endpoints, models};
+use isomorphic_app::api::models;
 use isomorphic_app::App;
+use warp::path;
+use warp::Filter;
 
 const HTML_PLACEHOLDER: &str = "#HTML_INSERTED_HERE_BY_SERVER#";
 const CSS_PLACEHOLDER: &str = "#CSS_PATH#";
 const STATE_PLACEHOLDER: &str = "#INITIAL_STATE_JSON#";
 
-fn index(req: &HttpRequest) -> impl Responder {
-    let app = App::new(
-        req.query()
-            .get("init")
-            .map(|string| string.parse().expect("bad param"))
-            .unwrap_or(1001),
-    );
-    let state = app.store.borrow();
-
-    let html = format!("{}", include_str!("./index.html"));
-    let html = html.replacen(HTML_PLACEHOLDER, &app.render().to_string(), 1);
-    let html = html.replacen(STATE_PLACEHOLDER, &state.to_json(), 1);
+pub fn serve() {
+    std::env::set_var("RUST_LOG", "warp=info");
+    pretty_env_logger::init();
 
     // Development
     #[cfg(debug_assertions)]
-    let html = html.replacen(CSS_PLACEHOLDER, "app.css", 2);
+    let files = warp::fs::dir("../client/build");;
 
     // Production
     #[cfg(not(debug_assertions))]
-    let html = html.replacen(CSS_PLACEHOLDER, "app.min.css", 2);
+    let files = warp::fs::dir("../client/dist");;
 
-    HttpResponse::Ok().content_type("text/html").body(html)
-}
+    let index = warp::path::end().map(|| {
+        let app = App::new();
+        let state = app.store.borrow();
 
-fn jobs_handler(job: Json<models::Job>) -> Result<String> {
-    Ok(format!("{}", job.name))
-}
-
-pub fn serve() {
-    std::env::set_var("RUST_LOG", "actix_web=info");
-    env_logger::init();
-
-    let server = actix_web::server::new(|| {
-        let app = actix_web::App::new().middleware(middleware::Logger::default());
-        let app = app.resource("/", |r| r.f(index));
-
+        let html = format!("{}", include_str!("./index.html"));
+        let html = html.replacen(HTML_PLACEHOLDER, &app.render().to_string(), 1);
+        let html = html.replacen(STATE_PLACEHOLDER, &state.to_json(), 1);
         // Development
         #[cfg(debug_assertions)]
-        let app = app.handler("/", fs::StaticFiles::new("../client/build").unwrap());
+        let html = html.replacen(CSS_PLACEHOLDER, "app.css", 2);
 
         // Production
         #[cfg(not(debug_assertions))]
-        let app = app.handler("/", fs::StaticFiles::new("../client/dist").unwrap());
-
-        // API
-        let jobs_path = endpoints::get_path(&endpoints::Endpoint::Jobs);
-        let app = app.resource(jobs_path, |r| {
-            r.method(http::Method::GET).with(jobs_handler)
-        });
-
-        app
+        let html = html.replacen(CSS_PLACEHOLDER, "app.min.css", 2);
+        warp::reply::html(html)
     });
 
-    let path = std::env::current_dir().unwrap();
-    println!("The current directory is {}", path.display());
+    let jobs_post = warp::post2()
+        .and(path!("api" / "jobs"))
+        .and(warp::body::json())
+        .map(|job: models::Job| {
+            let name = job.name;
+            warp::reply::json(&name)
+        });
 
-    let server = server.bind("0.0.0.0:7878").unwrap();
+    let routes = index.or(files).or(jobs_post);
 
-    println!("Listening on port 7878");
-    server.run();
+    warp::serve(routes).run(([127, 0, 0, 1], 7878));
 }

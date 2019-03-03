@@ -10,3 +10,5 @@ isomorphic-app = { path = "../app" }
 actix-web = "0.7"
 futures = "0.1.25"
 env_logger = "0.6.0"
+warp = "0.1.13"
+pretty_env_logger = "0.3.0"

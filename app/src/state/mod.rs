@@ -9,7 +9,6 @@ pub use self::msg::Msg;
 
 #[derive(Serialize, Deserialize)]
 pub struct State {
-    click_count: Rc<Cell<u32>>,
     #[serde(skip)]
     listeners: Vec<Box<Fn() -> ()>>,
     path: String,
@@ -17,12 +16,9 @@ pub struct State {
 }
 
 impl State {
-    pub fn new(count: u32) -> State {
+    pub fn new() -> State {
         State {
             path: "/".to_string(),
-            click_count: Rc::new(Cell::new(count)),
-            // TODO: Move this to the store.. shouldn't be storing functions in state
-            // just data
             listeners: vec![],
             form: HashMap::new(),
         }
@@ -59,10 +55,6 @@ impl State {
         }
     }
 
-    pub fn click_count(&self) -> u32 {
-        self.click_count.get()
-    }
-
     pub fn path(&self) -> &str {
         &self.path
     }
@@ -73,31 +65,11 @@ impl State {
 }
 
 impl State {
-    fn increment_click(&mut self) {
-        self.click_count.set(self.click_count.get() + 1);
-    }
-
     fn set_path(&mut self, page: &ActivePage) {
         self.path = get_path(page).to_string();
     }
 
     fn set_input(&mut self, name: String, input: String) {
         self.form.insert(name, input);
-    }
-}
-
-#[cfg(test)]
-mod tests {
-    use super::*;
-
-    #[test]
-    fn serialize_deserialize() {
-        let state_json = r#"{"click_count":5,"path":"/"}"#;
-
-        let state = State::from_json(state_json);
-
-        assert_eq!(state.click_count(), 5);
-
-        assert_eq!(&state.to_json(), state_json);
     }
 }

@@ -49,6 +49,10 @@ pub fn post(endpoint: &Endpoint, data: Option<&JsValue>) -> Result<Async<JsValue
     let request = Request::new_with_str_and_init(get_path(endpoint), &opts).unwrap();
 
     request.headers().set("Accept", "application/json").unwrap();
+    request
+        .headers()
+        .set("Content-Type", "application/json")
+        .unwrap();
 
     let mut request_promise = fetch(request)
         .and_then(|resp_value| {
