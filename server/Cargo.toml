@@ -8,3 +8,5 @@ edition = "2018"
 virtual-dom-rs = { path = "../percy/crates/virtual-dom-rs" }
 isomorphic-app = { path = "../app" }
 actix-web = "0.7"
+futures = "0.1.25"
+env_logger = "0.6.0"

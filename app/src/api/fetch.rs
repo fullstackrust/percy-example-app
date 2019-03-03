@@ -9,7 +9,6 @@ use web_sys::{Request, RequestInit, RequestMode, Response};
 pub fn get(endpoint: &Endpoint) -> Result<Async<JsValue>, JsValue> {
     let mut opts = RequestInit::new();
     opts.method("GET");
-    opts.mode(RequestMode::Cors);
 
     let request = Request::new_with_str_and_init(get_path(endpoint), &opts).unwrap();
 
@@ -45,7 +44,6 @@ pub fn get(endpoint: &Endpoint) -> Result<Async<JsValue>, JsValue> {
 pub fn post(endpoint: &Endpoint, data: Option<&JsValue>) -> Result<Async<JsValue>, JsValue> {
     let mut opts = RequestInit::new();
     opts.method("POST");
-    opts.mode(RequestMode::Cors);
     opts.body(data);
 
     let request = Request::new_with_str_and_init(get_path(endpoint), &opts).unwrap();

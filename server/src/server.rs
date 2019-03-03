@@ -1,6 +1,8 @@
 extern crate actix_web;
-use self::actix_web::{fs, HttpRequest, HttpResponse, Responder};
+extern crate env_logger;
+use self::actix_web::{fs, http, middleware, HttpRequest, HttpResponse, Json, Responder, Result};
 
+use isomorphic_app::api::{endpoints, models};
 use isomorphic_app::App;
 
 const HTML_PLACEHOLDER: &str = "#HTML_INSERTED_HERE_BY_SERVER#";
@@ -31,9 +33,16 @@ fn index(req: &HttpRequest) -> impl Responder {
     HttpResponse::Ok().content_type("text/html").body(html)
 }
 
+fn jobs_handler(job: Json<models::Job>) -> Result<String> {
+    Ok(format!("{}", job.name))
+}
+
 pub fn serve() {
+    std::env::set_var("RUST_LOG", "actix_web=info");
+    env_logger::init();
+
     let server = actix_web::server::new(|| {
-        let app = actix_web::App::new();
+        let app = actix_web::App::new().middleware(middleware::Logger::default());
         let app = app.resource("/", |r| r.f(index));
 
         // Development
@@ -43,6 +52,12 @@ pub fn serve() {
         // Production
         #[cfg(not(debug_assertions))]
         let app = app.handler("/", fs::StaticFiles::new("../client/dist").unwrap());
+
+        // API
+        let jobs_path = endpoints::get_path(&endpoints::Endpoint::Jobs);
+        let app = app.resource(jobs_path, |r| {
+            r.method(http::Method::GET).with(jobs_handler)
+        });
 
         app
     });
