@@ -11,15 +11,15 @@ extern crate serde_derive;
 use std::cell::RefCell;
 use std::rc::Rc;
 
-mod routes;
-mod store;
-mod state;
 mod actions;
+mod routes;
+mod state;
+mod store;
 mod views;
 
 pub use crate::routes::*;
-pub use crate::store::*;
 pub use crate::state::*;
+pub use crate::store::*;
 
 pub struct App {
     pub store: Rc<RefCell<Store>>,
@@ -56,19 +56,5 @@ impl App {
             .view(self.store.borrow().path())
             .unwrap()
             .render()
-    }
-}
-
-#[cfg(test)]
-mod tests {
-    use super::*;
-
-    #[test]
-    fn click_msg() {
-        let app = App::new(5);
-
-        assert_eq!(app.store.borrow().click_count(), 5);
-        app.store.borrow_mut().msg(&Msg::Click);
-        assert_eq!(app.store.borrow().click_count(), 6);
     }
 }

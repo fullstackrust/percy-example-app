@@ -48,7 +48,6 @@ impl State {
 impl State {
     pub fn msg(&mut self, msg: &Msg) {
         match msg {
-            Msg::Click => self.increment_click(),
             Msg::Path(page) => self.set_path(page),
             Msg::Input(name, input) => self.set_input(name.to_string(), input.to_string()),
         };
