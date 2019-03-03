@@ -18,5 +18,9 @@ js-sys = "0.3"
 version = "0.3"
 features = [
     "HtmlInputElement",
-    "Event"
+    "Event",
+    "Window"
 ]
+
+[profile.release]
+lto = true

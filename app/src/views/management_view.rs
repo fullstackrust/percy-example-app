@@ -1,3 +1,4 @@
+use crate::actions::job_actions::post_job;
 use crate::routes::ActivePage;
 use crate::state::Msg;
 use crate::store::Store;
@@ -16,29 +17,47 @@ static WRAP_CSS: &'static str = css! {"
     }
 "};
 
-fn field_name(name: &str) -> Rc<RefCell<String>> {
-    Rc::new(RefCell::new(name.to_string()))
+pub fn get_field(store: Rc<RefCell<Store>>, name: Rc<RefCell<String>>) -> String {
+    let name = name.borrow().to_string();
+    store
+        .borrow()
+        .form()
+        .get(&name)
+        .unwrap_or(&"".to_string())
+        .to_owned()
 }
 
 fn form_input(store: Rc<RefCell<Store>>, name: Rc<RefCell<String>>) -> VirtualNode {
+    let input_store: Rc<RefCell<Store>> = Rc::clone(&store);
+    let value_store: Rc<RefCell<Store>> = Rc::clone(&store);
+    let input_name: Rc<RefCell<String>> = Rc::clone(&name);
+    let value_name: Rc<RefCell<String>> = Rc::clone(&name);
+
     html! {
-        <input oninput=move |event: Event| {
-            let input_elem = event.target().unwrap();
-            let input_elem = input_elem.dyn_into::<HtmlInputElement>().unwrap();
-            let value: String = input_elem.value();
-            let store: Rc<RefCell<Store>> = Rc::clone(&store);
-            let name: Rc<RefCell<String>> = Rc::clone(&name);
-            store.borrow_mut().msg(&Msg::Input(name.borrow().to_string(), value));
-        } />
+        <input
+            oninput=move |event: Event| {
+                let input_elem = event.target().unwrap();
+                let input_elem = input_elem.dyn_into::<HtmlInputElement>().unwrap();
+                let value: String = input_elem.value();
+                let store: Rc<RefCell<Store>> = Rc::clone(&input_store);
+                let name: Rc<RefCell<String>> = Rc::clone(&input_name);
+                store.borrow_mut().msg(&Msg::Input(name.borrow().to_string(), value));
+            }
+            value=get_field(Rc::clone(&value_store), Rc::clone(&value_name))
+        />
     }
 }
 
-pub fn get_field(store: Ref<Store>, name: &str) -> String {
-    store
-        .form()
-        .get("job_name")
-        .unwrap_or(&"".to_string())
-        .to_owned()
+fn post_job_button(store: Rc<RefCell<Store>>) -> VirtualNode {
+    html! {
+        <button onclick=move |_ev: Event| {
+            post_job(Rc::clone(&store));
+        }>Submit</button>
+    }
+}
+
+fn field_name(name: &str) -> Rc<RefCell<String>> {
+    Rc::new(RefCell::new(name.to_string()))
 }
 
 // Page
@@ -79,6 +98,7 @@ impl View for ManagementView {
                             <td>{ form_input(Rc::clone(&self.store), field_name("job_rate")) }</td>
                         </tr>
                     </table>
+                    { post_job_button(Rc::clone(&self.store)) }
                 </div>
             </div>
         }

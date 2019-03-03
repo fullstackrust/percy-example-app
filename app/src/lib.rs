@@ -12,15 +12,14 @@ use std::cell::RefCell;
 use std::rc::Rc;
 
 mod routes;
-pub use crate::routes::*;
-
 mod store;
-pub use crate::store::*;
-
 mod state;
-pub use crate::state::*;
-
+mod actions;
 mod views;
+
+pub use crate::routes::*;
+pub use crate::store::*;
+pub use crate::state::*;
 
 pub struct App {
     pub store: Rc<RefCell<Store>>,
