@@ -12,6 +12,7 @@ use std::cell::RefCell;
 use std::rc::Rc;
 
 mod actions;
+mod api;
 mod routes;
 mod state;
 mod store;

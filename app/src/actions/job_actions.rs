@@ -1,3 +1,5 @@
+use crate::api::request;
+use crate::api::{endpoints, fetch, models};
 use crate::store::Store;
 use std::cell::{Ref, RefCell};
 use std::rc::Rc;
@@ -26,7 +28,8 @@ pub fn post_job(store: Rc<RefCell<Store>>) {
     let job_user = get_field(store.borrow(), "job_user");
     let job_rate = get_field(store.borrow(), "job_rate");
 
-    job_alert(job_name, job_desc, job_user, job_rate);
+    request::post_job(job_name, job_desc, job_user, job_rate).unwrap();
+    // job_alert(job_name, job_desc, job_user, job_rate);
 }
 
 // pub fn get_jobs() {
