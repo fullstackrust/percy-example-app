@@ -22,11 +22,11 @@ fn index(req: &HttpRequest) -> impl Responder {
 
     // Development
     #[cfg(debug_assertions)]
-    let html = html.replacen(CSS_PLACEHOLDER, "app.css", 1);
+    let html = html.replacen(CSS_PLACEHOLDER, "app.css", 2);
 
     // Production
     #[cfg(not(debug_assertions))]
-    let html = html.replacen(CSS_PLACEHOLDER, "app.min.css", 1);
+    let html = html.replacen(CSS_PLACEHOLDER, "app.min.css", 2);
 
     HttpResponse::Ok().content_type("text/html").body(html)
 }
