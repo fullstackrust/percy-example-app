@@ -53,9 +53,6 @@ impl App {
         #[allow(unused_variables)] // Compiler doesn't see it inside html macro
         let store = Rc::clone(&self.store);
 
-        self.router
-            .view(self.store.borrow().path())
-            .unwrap()
-            .render()
+        self.router.view(self.store.borrow().path()).unwrap()
     }
 }

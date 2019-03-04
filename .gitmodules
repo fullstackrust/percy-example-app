@@ -1,3 +1,4 @@
 [submodule "percy"]
 	path = percy
 	url = git@github.com:cryptoquick/percy.git
+	branch = router

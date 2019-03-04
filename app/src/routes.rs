@@ -1,13 +1,11 @@
 use router_rs::prelude::*;
 use std::cell::RefCell;
-use std::collections::HashMap;
 use std::rc::Rc;
 use virtual_dom_rs::prelude::*;
+pub use virtual_dom_rs::VirtualNode;
 
 use crate::store::*;
 use crate::views::*;
-
-// TODO: Is there a better way to do this? To deduplicate this?
 
 pub enum ActivePage {
     Home,
@@ -35,49 +33,37 @@ pub fn get_page(path: &str) -> ActivePage {
     }
 }
 
+#[route(path = "/")]
+fn home_route(store: Provided<Rc<RefCell<Store>>>) -> VirtualNode {
+    HomeView::new(Rc::clone(&store)).render()
+}
+
+#[route(path = "/contractors")]
+fn contractors_route(store: Provided<Rc<RefCell<Store>>>) -> VirtualNode {
+    ContractorsView::new(Rc::clone(&store)).render()
+}
+
+#[route(path = "/management")]
+fn management_route(store: Provided<Rc<RefCell<Store>>>) -> VirtualNode {
+    ManagementView::new(Rc::clone(&store)).render()
+}
+
+#[route(path = "/report")]
+fn report_route(store: Provided<Rc<RefCell<Store>>>) -> VirtualNode {
+    ReportView::new(Rc::clone(&store)).render()
+}
+
 pub fn make_router(store: Rc<RefCell<Store>>) -> Router {
     let mut router = Router::default();
 
-    let store_clone = Rc::clone(&store);
-    let param_types = HashMap::new();
-    let home_route = Route::new(
-        "/",
-        param_types,
-        Box::new(move |_params| Box::new(HomeView::new(Rc::clone(&store_clone))) as Box<View>),
-    );
+    router.provide(store);
 
-    let store_clone = Rc::clone(&store);
-    let param_types = HashMap::new();
-    let contractors_route = Route::new(
-        "/contractors",
-        param_types,
-        Box::new(move |_params| {
-            Box::new(ContractorsView::new(Rc::clone(&store_clone))) as Box<View>
-        }),
-    );
-
-    let store_clone = Rc::clone(&store);
-    let param_types = HashMap::new();
-    let management_route = Route::new(
-        "/management",
-        param_types,
-        Box::new(move |_params| {
-            Box::new(ManagementView::new(Rc::clone(&store_clone))) as Box<View>
-        }),
-    );
-
-    let store_clone = Rc::clone(&store);
-    let param_types = HashMap::new();
-    let report_route = Route::new(
-        "/report",
-        param_types,
-        Box::new(move |_params| Box::new(ReportView::new(Rc::clone(&store_clone))) as Box<View>),
-    );
-
-    router.add_route(home_route);
-    router.add_route(management_route);
-    router.add_route(contractors_route);
-    router.add_route(report_route);
+    router.set_route_handlers(create_routes![
+        home_route,
+        contractors_route,
+        management_route,
+        report_route
+    ]);
 
     router
 }
