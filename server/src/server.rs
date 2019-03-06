@@ -10,16 +10,13 @@ const CSS_PLACEHOLDER: &str = "#CSS_PATH#";
 const STATE_PLACEHOLDER: &str = "#INITIAL_STATE_JSON#";
 
 pub fn serve() {
-    std::env::set_var("RUST_LOG", "warp=info");
-    pretty_env_logger::init();
-
     // Development
     #[cfg(debug_assertions)]
-    let files = warp::fs::dir("../client/build");;
+    let files = warp::fs::dir("../client/build");
 
     // Production
     #[cfg(not(debug_assertions))]
-    let files = warp::fs::dir("../client/dist");;
+    let files = warp::fs::dir("../client/dist");
 
     let index = warp::path::end().map(|| {
         let app = App::new();
@@ -40,7 +37,6 @@ pub fn serve() {
         warp::reply::html(html)
     });
 
-    // let state = warp::any().map(move || Database::new());
     let graphql_filter = juniper_warp::make_graphql_filter(
         schema(),
         warp::any()
@@ -55,5 +51,11 @@ pub fn serve() {
 
     let routes = index.or(files).or(graphql);
 
-    warp::serve(routes).run(([127, 0, 0, 1], 7878));
+    // Development
+    #[cfg(debug_assertions)]
+    warp::serve(routes).run(([127, 0, 0, 1], 8080));
+
+    // Production
+    #[cfg(not(debug_assertions))]
+    warp::serve(routes).run(([165, 227, 77, 114], 80));
 }

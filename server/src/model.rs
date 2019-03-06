@@ -1,40 +1,37 @@
-use crate::schema::{GraphQLJob, InputJob};
+use crate::schema::{InputJob, OutputJob};
 use bytevec::errors::ByteVecError;
 use bytevec::{ByteDecodable, ByteEncodable};
+use chrono::Utc;
 use dirs;
 use sled::{Db, IVec};
+use ulid::Ulid;
 
 // Byte serialization models
 bytevec_decl! {
     #[derive(PartialEq, Eq, Debug)]
     pub struct Job {
-        name: String,
-        desc: String,
-        user: String,
-        rate: String
+        pub id: String,         // TODO type
+        pub date_added: String, // TODO type
+        pub job_desc: String,
+        pub job_name: String,
+        pub job_rate_type: String, // TODO type
+        pub job_rate: String,      // TODO type
+        pub user_id: String,       // TODO user_id
+        pub user_name: String
     }
 }
 
-impl From<&InputJob> for Job {
-    fn from(job: &InputJob) -> Self {
-        let new_job = job.clone();
-        Job {
-            name: new_job.name.clone(),
-            desc: new_job.desc.clone(),
-            user: new_job.user.clone(),
-            rate: new_job.rate.clone(),
-        }
-    }
-}
-
-impl From<&InputJob> for GraphQLJob {
-    fn from(job: &InputJob) -> Self {
-        let new_job = job.clone();
-        GraphQLJob {
-            name: new_job.name.clone(),
-            desc: new_job.desc.clone(),
-            user: new_job.user.clone(),
-            rate: new_job.rate.clone(),
+impl Into<OutputJob> for Job {
+    fn into(self) -> OutputJob {
+        OutputJob {
+            id: self.id,
+            date_added: self.date_added,
+            job_desc: self.job_desc,
+            job_name: self.job_name,
+            job_rate_type: self.job_rate_type,
+            job_rate: self.job_rate,
+            user_id: self.user_id,
+            user_name: self.user_name,
         }
     }
 }
@@ -53,7 +50,7 @@ impl Database {
         match Db::start_default(path) {
             Ok(db) => Result::Ok(Database { db }),
             Err(err) => {
-                println!("Error creating database: {:?}", err);
+                error!("Error creating database: {:?}", err);
                 Result::Err(())
             }
         }
@@ -63,7 +60,7 @@ impl Database {
         match self.db.set(key, value) {
             Ok(_old_val) => Result::Ok(()),
             Err(err) => {
-                println!("Error inserting key into database: {}", err);
+                error!("Error inserting key into database: {}", err);
                 Result::Err(err)
             }
         }
@@ -73,7 +70,7 @@ impl Database {
         match self.db.get(key) {
             Ok(val) => Result::Ok(val.unwrap()),
             Err(err) => {
-                println!("Error inserting key into database: {}", err);
+                error!("Error inserting key into database: {}", err);
                 Result::Err(err)
             }
         }
@@ -90,45 +87,52 @@ impl Database {
     }
 
     // // Model-specific serializers and deserializers
-    pub fn set_job(&self, job: &InputJob) -> Result<GraphQLJob, ()> {
-        // let job: Job = Job {
-        //     name: job.name,
-        //     desc: job.desc,
-        //     user: job.user,
-        //     rate: job.rate,
-        // };
+    pub fn set_job(&self, job: &InputJob) -> Result<OutputJob, ()> {
+        let ulid = Ulid::new();
+        let id = ulid.to_string();
+        let date_added = Utc::now().to_string();
+        let user_id = ulid.to_string(); // TODO temp
 
-        let key = format!("job:{}", job.name);
-        let value = Job::from(job.clone()).encode::<u8>().unwrap();
+        let job: Job = Job {
+            id,
+            date_added,
+            job_desc: job.desc.clone(),
+            job_name: job.name.clone(),
+            job_rate_type: "hourly".to_string(),
+            job_rate: job.rate.clone(),
+            user_id,                     // TODO use user id
+            user_name: job.user.clone(), // TODO lookup user id
+        };
+
+        let key = format!("job:{}", job.id);
+        let value = job.encode::<u8>().unwrap();
 
         match self.set(key, value) {
-            Ok(val) => Result::Ok(GraphQLJob::from(job.clone())),
+            Ok(_old_val) => {
+                info!("Job inserted: {:?}", job);
+                Result::Ok(job.into())
+            }
             Err(err) => {
-                println!("Error inserting key into database: {}", err);
+                error!("Error inserting key into database: {}", err);
                 Result::Err(())
             }
         }
     }
 
     pub fn get_job(&self, job: Job) -> Result<Job, ByteVecError> {
-        let key = format!("job:{}", job.name);
+        let key = format!("job:{}", job.id);
         let value = self.get(key).unwrap();
         Job::decode::<u8>(&value)
     }
 
-    pub fn get_jobs(&self) -> Result<Vec<GraphQLJob>, ByteVecError> {
+    pub fn get_jobs(&self) -> Result<Vec<OutputJob>, ByteVecError> {
         let key = format!("job:");
         self.get_gt(key)
             .unwrap()
             .iter()
             .map(|value: &IVec| {
                 let job = Job::decode::<u8>(&value).unwrap();
-                Result::Ok(GraphQLJob {
-                    name: job.name,
-                    desc: job.desc,
-                    user: job.user,
-                    rate: job.rate,
-                })
+                Result::Ok(job.into())
             })
             .collect()
     }
