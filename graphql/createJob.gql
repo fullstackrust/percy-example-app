@@ -1,0 +1,8 @@
+mutation ($name: String!, $desc: String!, $user: String!, $rate: String!) {
+    createJob(job: { name: $name, desc: $desc, user: $user, rate: $rate }) {
+        name
+        desc
+        user
+        rate
+    }
+}
