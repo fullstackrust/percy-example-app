@@ -18,7 +18,7 @@ pub fn serve() {
     #[cfg(not(debug_assertions))]
     let files = warp::fs::dir("../client/dist");
 
-    let index = warp::path::end().map(|| {
+    let index = warp::any().map(|| {
         let app = App::new();
         let state = app.store.borrow();
 
@@ -49,7 +49,7 @@ pub fn serve() {
     );
     let graphql = warp::path("graphql").and(graphql_filter);
 
-    let routes = index.or(files).or(graphql);
+    let routes = files.or(graphql).or(index);
 
     // Development
     #[cfg(debug_assertions)]

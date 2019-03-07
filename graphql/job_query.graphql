@@ -1,0 +1,13 @@
+mutation Job($name: String!, $desc: String!, $user: String!, $rate: String!) {
+  createJob(job: { name: $name, desc: $desc, user: $user, rate: $rate }) {
+    id
+    dateAdded
+    jobDesc
+    jobName
+    jobRateType
+    jobRate
+    userId
+    userName
+    __typename
+  }
+}

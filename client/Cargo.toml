@@ -9,7 +9,7 @@ crate-type = ["cdylib"]
 
 [dependencies]
 console_error_panic_hook = "0.1"
-isomorphic-app = { path = "../app" }
+isomorphic-app = { path = "../app", features = ["logging"] }
 virtual-dom-rs = { path = "../percy/crates/virtual-dom-rs" }
 
 [dependencies.wasm-bindgen]

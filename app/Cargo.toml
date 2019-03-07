@@ -4,6 +4,9 @@ version = "0.1.0"
 publish = false
 edition = "2018"
 
+[features]
+logging = []
+
 [dependencies]
 virtual-dom-rs = { path = "../percy/crates/virtual-dom-rs" }
 css-rs-macro = { path = "../percy/crates/css-rs-macro" }
@@ -13,8 +16,13 @@ serde_derive = "1"
 serde_json = "1"
 wasm-bindgen = { version = "0.2.33", features = ["serde-serialize"] }
 js-sys = "0.3"
-futures = "0.1.25"
+# futures = "0.1.25"
 wasm-bindgen-futures = "0.3.14"
+graphql_client = "0.6.1"
+failure = "0.1.5"
+log = "0.4.6"
+graphql_client_web = "0.6.1"
+futures-await = { version = "0.1", git = "https://github.com/vorot93/futures-await.git" }
 
 [dependencies.web-sys]
 version = "0.3"

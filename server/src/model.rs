@@ -88,10 +88,9 @@ impl Database {
 
     // // Model-specific serializers and deserializers
     pub fn set_job(&self, job: &InputJob) -> Result<OutputJob, ()> {
-        let ulid = Ulid::new();
-        let id = ulid.to_string();
+        let id = Ulid::new().to_string();
         let date_added = Utc::now().to_string();
-        let user_id = ulid.to_string(); // TODO temp
+        let user_id = Ulid::new().to_string(); // TODO temp
 
         let job: Job = Job {
             id,

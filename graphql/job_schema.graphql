@@ -1,0 +1,27 @@
+schema {
+  # query: Query
+  mutation: Mutation
+  # subscription: Subscription
+}
+
+# The query type, represents all of the entry points into our object graph
+# type Query {}
+
+# The mutation type, represents all updates we can make to our data
+type Mutation {
+  createJob(name: String!, desc: String!, user: String!, rate: String!): Job
+}
+
+# The subscription type, represents all subscriptions we can make to our data
+# type Subscription {}
+
+interface Job {
+  id: String
+  dateAdded: String
+  jobDesc: String
+  jobName: String
+  jobRateType: String
+  jobRate: String
+  userId: String
+  userName: String
+}

@@ -4,6 +4,7 @@ use crate::state::Msg;
 use crate::store::Store;
 use crate::views::nav_bar_view::NavBarView;
 use css_rs_macro::css;
+use futures::Future;
 use std::cell::{Ref, RefCell};
 use std::rc::Rc;
 use virtual_dom_rs::prelude::*;
@@ -51,7 +52,7 @@ fn form_input(store: Rc<RefCell<Store>>, name: Rc<RefCell<String>>) -> VirtualNo
 fn post_job_button(store: Rc<RefCell<Store>>) -> VirtualNode {
     html! {
         <button onclick=move |_ev: Event| {
-            post_job(Rc::clone(&store));
+            post_job(Rc::clone(&store)).wait().unwrap();
         }>Submit</button>
     }
 }
