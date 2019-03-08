@@ -18,7 +18,7 @@ use std::rc::Rc;
 
 mod actions;
 pub mod api;
-mod routes;
+pub mod routes;
 mod state;
 mod store;
 mod views;

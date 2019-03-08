@@ -1,4 +1,4 @@
-use crate::routes::ActivePage;
+use crate::routes::{get_page, get_path, ActivePage};
 use crate::state::Msg;
 use crate::store::Store;
 use crate::views::nav_bar_view::NavBarView;
@@ -28,20 +28,21 @@ static USER_ROLE_SELECTOR_CSS: &'static str = css! {"
     }
 "};
 
-fn user_role_button_callback(store: Rc<RefCell<Store>>, page: &'static ActivePage) -> Box<Fn(u32)> {
+fn user_role_button_callback(store: Rc<RefCell<Store>>, page: ActivePage) -> Box<Fn(u32)> {
+    let path = get_path(&page);
     Box::new(move |_ev: u32| {
-        store.borrow_mut().msg(&Msg::Path(page));
+        store.borrow_mut().msg(&Msg::Path(get_page(path.clone())));
     })
 }
 
 fn user_role_button_component(name: &str, cb: Box<Fn(u32)>) -> VirtualNode {
     html! {
         <button
-            onclick=move |_ev: u32| {
-                cb(_ev);
+            onclick=move |ev: u32| {
+                cb(ev);
             }
         >
-            { text!(name) }
+            { name }
         </button>
     }
 }
@@ -73,9 +74,9 @@ impl View for HomeView {
     fn render(&self) -> VirtualNode {
         let nav_bar = NavBarView::new(ActivePage::Home, Rc::clone(&self.store)).render();
 
-        let manager_cb = user_role_button_callback(Rc::clone(&self.store), &ActivePage::Management);
+        let manager_cb = user_role_button_callback(Rc::clone(&self.store), ActivePage::Management);
         let contractor_cb =
-            user_role_button_callback(Rc::clone(&self.store), &ActivePage::Contractors);
+            user_role_button_callback(Rc::clone(&self.store), ActivePage::Contractors);
 
         html! {
             <div>

@@ -27,14 +27,14 @@ futures-await = { version = "0.1", git = "https://github.com/vorot93/futures-awa
 [dependencies.web-sys]
 version = "0.3"
 features = [
-    "Event",
     'Headers',
-    "HtmlInputElement",
     'Request',
     'RequestInit',
     'RequestMode',
     'Response',
-    'Window'
+    'Window',
+    "Event",
+    "HtmlInputElement",
 ]
 
 [profile.release]

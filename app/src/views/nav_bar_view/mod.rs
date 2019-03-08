@@ -26,7 +26,7 @@ impl View for NavBarView {
 
         let home = NavBarItemView::new(
             Rc::clone(&self.store),
-            &ActivePage::Home,
+            ActivePage::Home,
             "InnoTrade Contractor",
             "",
         );
