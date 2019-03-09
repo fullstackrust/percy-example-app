@@ -1,4 +1,3 @@
-#[macro_use]
 use juniper;
 use juniper::FieldResult;
 

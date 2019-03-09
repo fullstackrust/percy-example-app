@@ -1,6 +1,4 @@
-use crate::routes::ActivePage;
-
 pub enum Msg {
-    Path(ActivePage),
+    Path(String),
     Input(String, String),
 }

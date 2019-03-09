@@ -7,32 +7,6 @@ pub use virtual_dom_rs::VirtualNode;
 use crate::store::*;
 use crate::views::*;
 
-pub enum ActivePage {
-    Home,
-    Management,
-    Contractors,
-    Report,
-}
-
-pub fn get_path(page: &ActivePage) -> &'static str {
-    match page {
-        ActivePage::Home => "/",
-        ActivePage::Management => "/management",
-        ActivePage::Contractors => "/contractors",
-        ActivePage::Report => "/report",
-    }
-}
-
-pub fn get_page(path: &str) -> ActivePage {
-    match path {
-        "/" => ActivePage::Home,
-        "/management" => ActivePage::Management,
-        "/contractors" => ActivePage::Contractors,
-        "/report" => ActivePage::Report,
-        &_ => ActivePage::Home,
-    }
-}
-
 #[route(path = "/")]
 fn home_route(store: Provided<Rc<RefCell<Store>>>) -> VirtualNode {
     HomeView::new(Rc::clone(&store)).render()

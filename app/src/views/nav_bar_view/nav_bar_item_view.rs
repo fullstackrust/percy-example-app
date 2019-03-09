@@ -1,4 +1,3 @@
-use crate::routes::{get_page, get_path, ActivePage};
 use crate::store::Store;
 use crate::Msg;
 use css_rs_macro::css;
@@ -7,7 +6,7 @@ use std::rc::Rc;
 use virtual_dom_rs::prelude::*;
 
 pub struct NavBarItemView {
-    page: ActivePage,
+    path: String,
     text: &'static str,
     style: &'static str,
     store: Rc<RefCell<Store>>,
@@ -16,13 +15,13 @@ pub struct NavBarItemView {
 impl NavBarItemView {
     pub fn new(
         store: Rc<RefCell<Store>>,
-        page: ActivePage,
+        path: String,
         text: &'static str,
         style: &'static str,
     ) -> NavBarItemView {
         NavBarItemView {
             store,
-            page,
+            path,
             text,
             style,
         }
@@ -32,17 +31,15 @@ impl NavBarItemView {
 impl View for NavBarItemView {
     fn render(&self) -> VirtualNode {
         let store = Rc::clone(&self.store);
-
-        let path = get_path(&self.page);
-
         let text = VirtualNode::text(self.text);
+        let path: String = self.path.to_string();
 
         html! {
             <span
                 style=self.style
                 class=NAV_BAR_ITEM_CSS
                 onclick=move |_ev: u32| {
-                  store.borrow_mut().msg(&Msg::Path(get_page(path.clone())));
+                  store.borrow_mut().msg(&Msg::Path(path.clone()));
                 }
             >
               { text }

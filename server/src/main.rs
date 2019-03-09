@@ -1,21 +1,17 @@
-extern crate isomorphic_app;
-extern crate isomorphic_server;
-#[macro_use]
-extern crate juniper;
-extern crate dirs;
-extern crate juniper_warp;
-extern crate sled;
-extern crate warp;
-#[macro_use]
-extern crate serde_derive;
-extern crate serde;
-extern crate serde_bytes;
-#[macro_use]
 extern crate bytevec;
 extern crate chrono;
-#[macro_use]
+extern crate dirs;
+extern crate isomorphic_app;
+extern crate isomorphic_server;
+extern crate juniper;
+extern crate juniper_warp;
 extern crate log;
+extern crate serde;
+extern crate serde_bytes;
+extern crate serde_derive;
+extern crate sled;
 extern crate ulid;
+extern crate warp;
 
 use isomorphic_server::server;
 

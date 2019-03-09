@@ -1,4 +1,3 @@
-use crate::routes::{get_path, ActivePage};
 use serde_json;
 use std::cell::Cell;
 use std::collections::HashMap;
@@ -65,8 +64,8 @@ impl State {
 }
 
 impl State {
-    fn set_path(&mut self, page: &ActivePage) {
-        self.path = get_path(page).to_string();
+    fn set_path(&mut self, path: &String) {
+        self.path = path.to_owned();
     }
 
     fn set_input(&mut self, name: String, input: String) {

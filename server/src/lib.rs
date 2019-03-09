@@ -6,7 +6,6 @@ extern crate dirs;
 extern crate juniper_warp;
 extern crate serde;
 extern crate serde_bytes;
-#[macro_use]
 extern crate serde_derive;
 extern crate sled;
 extern crate warp;

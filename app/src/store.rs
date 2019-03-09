@@ -1,4 +1,3 @@
-use crate::routes::get_path;
 use crate::state::Msg;
 use crate::state::State;
 
@@ -23,7 +22,7 @@ impl Store {
                 self.state.msg(msg);
 
                 if let Some(after_route) = &self.after_route {
-                    after_route(get_path(path));
+                    after_route(path);
                 }
             }
             _ => self.state.msg(msg),

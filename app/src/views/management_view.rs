@@ -1,5 +1,4 @@
 use crate::actions::job_actions::post_job;
-use crate::routes::ActivePage;
 use crate::state::Msg;
 use crate::store::Store;
 use crate::views::nav_bar_view::NavBarView;
@@ -74,7 +73,7 @@ impl ManagementView {
 
 impl View for ManagementView {
     fn render(&self) -> VirtualNode {
-        let nav_bar = NavBarView::new(ActivePage::Management, Rc::clone(&self.store)).render();
+        let nav_bar = NavBarView::new("/management".to_owned(), Rc::clone(&self.store)).render();
 
         html! {
             <div>

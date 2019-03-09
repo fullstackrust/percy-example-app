@@ -1,6 +1,5 @@
 use console_error_panic_hook;
 use isomorphic_app;
-use isomorphic_app::routes::get_page;
 use isomorphic_app::App;
 use isomorphic_app::Msg;
 use isomorphic_app::VirtualNode;
@@ -59,14 +58,12 @@ impl Client {
         let store = Rc::clone(&app.store);
 
         let location = web_sys::window().unwrap().location();
-        let path = location.pathname().unwrap() + &location.search().unwrap();
-        store.borrow_mut().msg(&Msg::Path(get_page(&path)));
+        let path: String = location.pathname().unwrap() + &location.search().unwrap();
+        store.borrow_mut().msg(&Msg::Path(path.clone()));
 
-        let on_popstate = move |_: web_sys::Event| {
-            let location = web_sys::window().unwrap().location();
-            let path = location.pathname().unwrap() + &location.search().unwrap();
-            store.borrow_mut().msg(&Msg::Path(get_page(&path)))
-        };
+        let pop_path = path.clone();
+        let on_popstate =
+            move |_: web_sys::Event| store.borrow_mut().msg(&Msg::Path(pop_path.clone()));
         let on_popstate = Box::new(on_popstate) as Box<FnMut(_)>;
         let mut on_popstate = Closure::wrap(on_popstate);
         web_sys::window()
@@ -79,13 +76,15 @@ impl Client {
         let root_node = document
             .get_element_by_id("isomorphic-rust-web-app")
             .unwrap();
-        let dom_updater = DomUpdater::new_replace_mount(app.render(), root_node);
+        let dom_updater = DomUpdater::new_replace_mount(app.render(path.clone()), root_node);
 
         Client { app, dom_updater }
     }
 
     pub fn render(&mut self) {
-        let vdom = self.app.render();
+        let location = web_sys::window().unwrap().location();
+        let path: String = location.pathname().unwrap() + &location.search().unwrap();
+        let vdom = self.app.render(path);
         self.dom_updater.update(vdom);
     }
 }

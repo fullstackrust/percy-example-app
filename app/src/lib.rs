@@ -54,10 +54,9 @@ impl App {
 }
 
 impl App {
-    pub fn render(&self) -> VirtualNode {
+    pub fn render(&self, path: String) -> VirtualNode {
         #[allow(unused_variables)] // Compiler doesn't see it inside html macro
         let store = Rc::clone(&self.store);
-
-        self.router.view(self.store.borrow().path()).unwrap()
+        self.router.view(&path).unwrap()
     }
 }

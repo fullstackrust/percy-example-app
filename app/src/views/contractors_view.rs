@@ -1,4 +1,3 @@
-use crate::routes::ActivePage;
 use crate::store::Store;
 use crate::views::nav_bar_view::NavBarView;
 use std::cell::RefCell;
@@ -17,7 +16,7 @@ impl ContractorsView {
 
 impl View for ContractorsView {
     fn render(&self) -> VirtualNode {
-        let nav_bar = NavBarView::new(ActivePage::Contractors, Rc::clone(&self.store)).render();
+        let nav_bar = NavBarView::new("/contractors".to_owned(), Rc::clone(&self.store)).render();
 
         html! {
             <div>

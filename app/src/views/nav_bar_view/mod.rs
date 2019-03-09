@@ -1,4 +1,3 @@
-use crate::routes::ActivePage;
 use crate::store::Store;
 use crate::Msg;
 use css_rs_macro::css;
@@ -10,12 +9,12 @@ mod nav_bar_item_view;
 use self::nav_bar_item_view::NavBarItemView;
 
 pub struct NavBarView {
-    active_page: ActivePage,
+    active_page: String,
     store: Rc<RefCell<Store>>,
 }
 
 impl NavBarView {
-    pub fn new(active_page: ActivePage, store: Rc<RefCell<Store>>) -> NavBarView {
+    pub fn new(active_page: String, store: Rc<RefCell<Store>>) -> NavBarView {
         NavBarView { active_page, store }
     }
 }
@@ -26,7 +25,7 @@ impl View for NavBarView {
 
         let home = NavBarItemView::new(
             Rc::clone(&self.store),
-            ActivePage::Home,
+            "/".to_owned(),
             "InnoTrade Contractor",
             "",
         );
