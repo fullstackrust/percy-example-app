@@ -56,7 +56,7 @@ impl Database {
         }
     }
 
-    pub fn set(&self, key: String, value: Vec<u8>) -> Result<(), sled::Error<()>> {
+    pub fn set(&self, key: String, value: Vec<u8>) -> Result<(), sled::Error> {
         match self.db.set(key, value) {
             Ok(_old_val) => Result::Ok(()),
             Err(err) => {
@@ -66,7 +66,7 @@ impl Database {
         }
     }
 
-    pub fn get(&self, key: String) -> Result<IVec, sled::Error<()>> {
+    pub fn get(&self, key: String) -> Result<IVec, sled::Error> {
         match self.db.get(key) {
             Ok(val) => Result::Ok(val.unwrap()),
             Err(err) => {
@@ -76,7 +76,7 @@ impl Database {
         }
     }
 
-    pub fn get_gt(&self, key: String) -> Result<Vec<IVec>, sled::Error<()>> {
+    pub fn get_gt(&self, key: String) -> Result<Vec<IVec>, sled::Error> {
         let mut results: Vec<IVec> = vec![];
         let mut finished = false;
         let mut next_key = key.into_bytes();
