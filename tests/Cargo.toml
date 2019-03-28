@@ -1,0 +1,8 @@
+[package]
+name = "tests"
+version = "0.1.0"
+publish = false
+edition = "2018"
+
+[dependencies]
+shellfn = "0.1.1"
