@@ -78,15 +78,25 @@ impl Database {
 
     pub fn get_gt(&self, key: String) -> Result<Vec<IVec>, sled::Error<()>> {
         let mut results: Vec<IVec> = vec![];
+        let mut finished = false;
+        let mut next_key = key.into_bytes();
 
-        while let Ok(result) = self.db.get_gt(&key) {
-            results.push(result.unwrap().1);
+        while !finished {
+            let result = self.db.get_gt(&next_key).unwrap();
+
+            if !result.is_none() {
+                let (key, value) = result.unwrap();
+                results.push(value);
+                next_key = key;
+            } else {
+                finished = true;
+            }
         }
 
         Result::Ok(results)
     }
 
-    // // Model-specific serializers and deserializers
+    // Model-specific serializers and deserializers
     pub fn set_job(&self, job: &InputJob) -> Result<OutputJob, ()> {
         let id = Ulid::new().to_string();
         let date_added = Utc::now().to_string();
