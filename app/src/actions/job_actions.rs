@@ -1,10 +1,6 @@
-use crate::api::schema;
-// use crate::api::{endpoints, fetch, models};
 use crate::store::Store;
-// use futures::prelude::{r#await, *};
-// use graphql_client::graphql_query_derive::*;
 use futures::Future;
-use graphql_client_web::{Client, ClientError, GraphQLQuery, Response};
+use graphql_client_web::{Client, GraphQLQuery};
 use std::cell::{Ref, RefCell};
 use std::rc::Rc;
 use wasm_bindgen::prelude::*;
@@ -15,7 +11,7 @@ use wasm_bindgen::JsValue;
     schema_path = "../graphql/job_schema.graphql",
     query_path = "../graphql/job_query.graphql"
 )]
-struct JobQuery;
+struct Job;
 
 pub fn get_field(store: Ref<Store>, name: &str) -> String {
     store.form().get(name).unwrap_or(&"".to_string()).to_owned()
@@ -62,7 +58,7 @@ pub fn post_job(store: Rc<RefCell<Store>>) -> impl Future<Item = (), Error = JsV
     //     r#await!(Client::new("http://127.0.0.1:8080/graphql").call(JobQuery, variables)).unwrap();
 
     Client::new("http://127.0.0.1:8080/graphql")
-        .call(JobQuery, variables)
+        .call(Job, variables)
         .map(|_response| {})
         .map_err(|_err| {})
         .then(|_| Ok(()))

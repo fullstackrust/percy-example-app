@@ -1,14 +1,9 @@
-use crate::actions::job_actions::post_job;
-use crate::state::Msg;
 use crate::store::Store;
 use crate::views::nav_bar_view::NavBarView;
 use css_rs_macro::css;
-use futures::Future;
-use std::cell::{Ref, RefCell};
+use std::cell::RefCell;
 use std::rc::Rc;
 use virtual_dom_rs::prelude::*;
-use wasm_bindgen::JsCast;
-use web_sys::{Event, HtmlInputElement};
 
 // Components
 static WRAP_CSS: &'static str = css! {"

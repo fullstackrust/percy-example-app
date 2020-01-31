@@ -11,9 +11,10 @@ logging = []
 virtual-dom-rs = "0.6.12"
 css-rs-macro = "0.1.0"
 router-rs = "0.2.1"
-serde = { version = "1.0.104", features = ["derive"] }
-serde_json = "1.0.45"
+serde = { version = "1", features = ["rc", "derive"] }
+serde_json = "1"
 wasm-bindgen = { version = "0.2.58", features = ["serde-serialize"] }
+web-sys = "0.3.35"
 js-sys = "0.3.35"
 futures = "0.3.1"
 wasm-bindgen-futures = "0.4.8"
@@ -21,19 +22,6 @@ graphql_client = "0.8.0"
 failure = "0.1.6"
 log = "0.4.8"
 graphql_client_web = "0.8.0"
-
-[dependencies.web-sys]
-version = "0.3"
-features = [
-    'Headers',
-    'Request',
-    'RequestInit',
-    'RequestMode',
-    'Response',
-    'Window',
-    "Event",
-    "HtmlInputElement",
-]
 
 [profile.release]
 lto = true

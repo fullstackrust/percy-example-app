@@ -1,3 +1,5 @@
+#![feature(proc_macro_hygiene)]
+
 use router_rs::prelude::*;
 use std::cell::RefCell;
 use std::rc::Rc;
@@ -27,7 +29,7 @@ fn report_route(store: Provided<Rc<RefCell<Store>>>) -> VirtualNode {
     ReportView::new(Rc::clone(&store)).render()
 }
 
-pub fn make_router(store: Rc<RefCell<Store>>) -> Router {
+pub fn make_router(store: Rc<RefCell<Store>>) -> Rc<Router> {
     let mut router = Router::default();
 
     router.provide(store);
@@ -39,5 +41,5 @@ pub fn make_router(store: Rc<RefCell<Store>>) -> Router {
         report_route
     ]);
 
-    router
+    Rc::new(router)
 }

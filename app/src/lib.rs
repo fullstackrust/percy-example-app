@@ -1,11 +1,15 @@
 #![feature(proc_macro_hygiene)]
-#![feature(generators)]
 
 use router_rs::prelude::*;
-pub use virtual_dom_rs::VirtualNode;
-
 use std::cell::RefCell;
 use std::rc::Rc;
+pub use virtual_dom_rs::VirtualNode;
+use wasm_bindgen;
+use wasm_bindgen::prelude::*;
+
+pub use crate::routes::*;
+pub use crate::state::*;
+pub use crate::store::*;
 
 mod actions;
 pub mod api;
@@ -14,13 +18,9 @@ mod state;
 mod store;
 mod views;
 
-pub use crate::routes::*;
-pub use crate::state::*;
-pub use crate::store::*;
-
 pub struct App {
     pub store: Rc<RefCell<Store>>,
-    router: Router,
+    router: Rc<Router>,
 }
 
 impl App {
