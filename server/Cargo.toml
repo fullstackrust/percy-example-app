@@ -5,21 +5,20 @@ publish = false
 edition = "2018"
 
 [dependencies]
-virtual-dom-rs = { path = "../percy/crates/virtual-dom-rs" }
+virtual-dom-rs = "0.6.12"
 isomorphic-app = { path = "../app" }
-actix-web = "0.7.18"
-futures = "0.1.25"
-env_logger = "0.6.1"
-pretty_env_logger = "0.3.0"
-log = "0.4.6"
-warp = "0.1.14"
-juniper = "0.11.1"
-juniper_warp = "0.2.0"
-sled = "0.20.0"
-dirs = "1.0.5"
-serde = "1.0.89"
-serde_derive = "1.0.89"
-serde_bytes = "0.10.5"
+actix-web = "2.0.0"
+futures = "0.3.1"
+env_logger = "0.7.1"
+pretty_env_logger = "0.4.0"
+log = "0.4.8"
+warp = "0.2.1"
+juniper = "0.14.2"
+juniper_warp = "0.5.2"
+sled = "0.31.0"
+dirs = "2.0.2"
+serde = { version = "1.0.104", features = ["derive"] }
+serde_bytes = "0.11.3"
 bytevec = "0.2.0"
 ulid = "0.3.1"
-chrono = { version = "0.4.6", features = ["serde"] }
+chrono = { version = "0.4.10", features = ["serde"] }

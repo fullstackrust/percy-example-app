@@ -1,6 +1,4 @@
 #[cfg(test)]
-extern crate shellfn;
-
 use shellfn::shell;
 use std::error::Error;
 

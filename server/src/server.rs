@@ -1,5 +1,3 @@
-extern crate pretty_env_logger;
-
 use crate::model::Database;
 use crate::schema::{schema, Context};
 use isomorphic_app::{App, Msg};

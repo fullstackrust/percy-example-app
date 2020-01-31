@@ -5,8 +5,4 @@ repository = "https://github.com/innotrade-platform/innotrade-contractor/"
 publish = false
 
 [workspace]
-members = [
-    "app",
-    "client",
-    "server"
-]
+members = ["app", "client", "server"]

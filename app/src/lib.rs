@@ -1,17 +1,8 @@
 #![feature(proc_macro_hygiene)]
 #![feature(generators)]
 
-extern crate virtual_dom_rs;
-
 use router_rs::prelude::*;
 pub use virtual_dom_rs::VirtualNode;
-
-#[macro_use]
-extern crate serde_derive;
-extern crate futures_await as futures;
-
-#[macro_use]
-extern crate graphql_client_web;
 
 use std::cell::RefCell;
 use std::rc::Rc;
