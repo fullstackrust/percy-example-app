@@ -7,4 +7,4 @@ mkdir -p dist/
 
 cp favicon.ico build/
 
-wasm-pack build --target no-modules --no-typescript --out-dir ./build
+wasm-pack +nightly build --target=web --no-typescript --out-dir ./build

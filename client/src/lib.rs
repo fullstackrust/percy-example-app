@@ -1,8 +1,8 @@
 use console_error_panic_hook;
-use isomorphic_app;
-use isomorphic_app::App;
-use isomorphic_app::Msg;
-use isomorphic_app::VirtualNode;
+use fullstackrust_percy_app;
+use fullstackrust_percy_app::App;
+use fullstackrust_percy_app::Msg;
+use fullstackrust_percy_app::VirtualNode;
 use std::rc::Rc;
 use virtual_dom_rs::prelude::*;
 use wasm_bindgen;
@@ -52,7 +52,11 @@ impl Client {
                 .unwrap()
                 .history()
                 .unwrap()
-                .push_state_with_url(&JsValue::null(), "InnoTrade Contractor", Some(new_path));
+                .push_state_with_url(
+                    &JsValue::null(),
+                    "Full Stack Rust - Percy Example App",
+                    Some(new_path),
+                );
         }));
 
         let store = Rc::clone(&app.store);
@@ -74,7 +78,7 @@ impl Client {
         let window = web_sys::window().unwrap();
         let document = window.document().unwrap();
         let root_node = document
-            .get_element_by_id("isomorphic-rust-web-app")
+            .get_element_by_id("fullstackrust-percy-web-app")
             .unwrap();
         let dom_updater = DomUpdater::new_replace_mount(app.render(path.clone()), root_node);
 

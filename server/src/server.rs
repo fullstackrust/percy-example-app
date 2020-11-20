@@ -1,6 +1,6 @@
 use crate::model::Database;
 use crate::schema::{schema, Context};
-use isomorphic_app::{App, Msg};
+use fullstackrust_percy_app::{App, Msg};
 use warp::{path::FullPath, Filter};
 
 const HTML_PLACEHOLDER: &str = "#HTML_INSERTED_HERE_BY_SERVER#";

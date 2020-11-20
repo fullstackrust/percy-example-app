@@ -6,4 +6,4 @@ cd ./client
 ./build-wasm.sh
 
 cd ../server
-RUSTFLAGS="$RUSTFLAGS -A dead_code" OUTPUT_CSS="$(pwd)/../client/build/app.css" cargo run -p isomorphic-server
+RUSTFLAGS="$RUSTFLAGS -A dead_code" OUTPUT_CSS="$(pwd)/../client/build/app.css" cargo +nightly run -p fullstackrust-percy-server

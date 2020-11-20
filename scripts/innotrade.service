@@ -1,8 +1,0 @@
-[Unit]
-Description=InnoTrade Contractor service
-
-[Service]
-ExecStart=/root/innotrade-contractor/scripts/run.debug.sh
-
-[Install]
-WantedBy=multi-user.target

@@ -4,4 +4,4 @@ cd $(dirname $0)
 
 cd ../server
 
-../target/debug/isomorphic-server
+../target/debug/fullstackrust-percy

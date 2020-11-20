@@ -4,4 +4,4 @@ cd $(dirname $0)
 
 cd server
 
-./target/x86_64-unknown-linux-gnu/release/isomorphic-server
+./target/x86_64-unknown-linux-gnu/release/fullstackrust-percy-server

@@ -1,7 +1,7 @@
 [package]
-name = "innotrade-contractor"
+name = "fullstackrust-percy"
 version = "0.0.1"
-repository = "https://github.com/innotrade-platform/innotrade-contractor/"
+repository = "https://github.com/fullstackrust/fullstackrust-percy/"
 publish = false
 
 [workspace]

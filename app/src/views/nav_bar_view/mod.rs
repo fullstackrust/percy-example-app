@@ -26,7 +26,7 @@ impl View for NavBarView {
         let home = NavBarItemView::new(
             Rc::clone(&self.store),
             "/".to_owned(),
-            "InnoTrade Contractor",
+            "Full Stack Rust - Percy Example App",
             "",
         );
 

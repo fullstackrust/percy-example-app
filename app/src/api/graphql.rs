@@ -6,7 +6,7 @@
 #![deny(missing_docs)]
 
 use failure::*;
-use futures::{Future, IntoFuture};
+use futures::Future;
 pub use graphql_client::{self, GraphQLQuery, Response};
 use log::*;
 use std::collections::HashMap;

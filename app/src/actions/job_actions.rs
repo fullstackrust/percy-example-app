@@ -1,6 +1,5 @@
 use crate::store::Store;
-use futures::Future;
-use graphql_client_web::{Client, GraphQLQuery};
+use graphql_client::{web::Client, GraphQLQuery};
 use std::cell::{Ref, RefCell};
 use std::rc::Rc;
 use wasm_bindgen::prelude::*;
@@ -8,8 +7,8 @@ use wasm_bindgen::JsValue;
 
 #[derive(GraphQLQuery)]
 #[graphql(
-    schema_path = "../graphql/job_schema.graphql",
-    query_path = "../graphql/job_query.graphql"
+    query_path = "../graphql/job_query.graphql",
+    schema_path = "../graphql/job_schema.graphql"
 )]
 struct Job;
 
@@ -30,9 +29,11 @@ pub fn job_alert(job_name: String, job_desc: String, job_user: String, job_rate:
     ));
 }
 
-// Result<Response<job_query::ResponseData>, ClientError>
-// #[r#async]
-pub fn post_job(store: Rc<RefCell<Store>>) -> impl Future<Item = (), Error = JsValue> {
+fn log(s: &str) {
+    web_sys::console::log_1(&JsValue::from_str(s))
+}
+
+pub async fn post_job(store: Rc<RefCell<Store>>) -> Result<JsValue, JsValue> {
     let name = get_field(store.borrow(), "job_name");
     let desc = get_field(store.borrow(), "job_desc");
     let user = get_field(store.borrow(), "job_user");
@@ -57,11 +58,17 @@ pub fn post_job(store: Rc<RefCell<Store>>) -> impl Future<Item = (), Error = JsV
     // let response =
     //     r#await!(Client::new("http://127.0.0.1:8080/graphql").call(JobQuery, variables)).unwrap();
 
-    Client::new("http://127.0.0.1:8080/graphql")
-        .call(Job, variables)
-        .map(|_response| {})
-        .map_err(|_err| {})
-        .then(|_| Ok(()))
+    let client = Client::new("http://127.0.0.1:8080/graphql");
+
+    client.call(Job, variables).await.map_err(|err| {
+        log(&format!(
+            "Could not fetch jobs. graphql_client_web error: {:?}",
+            err
+        ));
+        JsValue::NULL
+    })?;
+
+    Ok(JsValue::NULL)
 
     // #[cfg(feature = "logging")]
     // web_sys::console::log_1(&"aft her".into());

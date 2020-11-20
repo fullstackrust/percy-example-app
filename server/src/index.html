@@ -6,17 +6,17 @@
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <link rel="preload" href="#CSS_PATH#" as="style">
   <link rel="stylesheet" type="text/css" href="#CSS_PATH#" />
-  <title>InnoTrade</title>
+  <title>Full Stack Rust - Percy Example App</title>
 </head>
 
 <body style='margin: 0; padding: 0; width: 100%; height: 100%;'>
-  <div id="isomorphic-rust-web-app" style='width: 100%; height: 100%;'>
+  <div id="fullstackrust-percy-web-app" style='width: 100%; height: 100%;'>
     #HTML_INSERTED_HERE_BY_SERVER#
   </div>
 
-  <script src='./isomorphic_client.js'></script>
+  <script src='./fullstackrust_percy_client.js'></script>
   <script>
-    window.wasm_bindgen(`/isomorphic_client_bg.wasm`).then(main)
+    window.wasm_bindgen(`/fullstackrust_percy_client_bg.wasm`).then(main)
 
     let client
     let updateScheduled = false

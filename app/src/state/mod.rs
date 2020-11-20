@@ -1,3 +1,4 @@
+use serde::{Deserialize, Serialize};
 use serde_json;
 use std::cell::Cell;
 use std::collections::HashMap;

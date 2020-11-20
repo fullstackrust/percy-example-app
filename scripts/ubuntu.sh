@@ -12,8 +12,8 @@ make install
 
 cd ..
 
-git clone git@github.com:innotradeplatform/innotrade-contractor.git
-cd innotrade-contractor
+git clone git@github.com:fullstackrust/fullstackrust-percy.git
+cd fullstackrust-percy
 
 curl https://sh.rustup.rs -sSf | sh
 

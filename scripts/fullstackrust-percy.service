@@ -1,0 +1,8 @@
+[Unit]
+Description=Full Stack Rust Percy service
+
+[Service]
+ExecStart=/root/fullstackrust-percy/scripts/run.debug.sh
+
+[Install]
+WantedBy=multi-user.target

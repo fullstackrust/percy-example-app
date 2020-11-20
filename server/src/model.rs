@@ -43,9 +43,7 @@ pub struct Database {
 
 impl Database {
     pub fn new() -> Result<Self, ()> {
-        let mut path = dirs::home_dir().unwrap();
-        path.push(".data");
-        path.push("innotrade_contractor");
+        let path = Path::new("./data");
 
         match Db::start_default(path) {
             Ok(db) => Result::Ok(Database { db }),
